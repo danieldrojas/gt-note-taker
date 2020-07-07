@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const db = require("./db/db.json")
+const fs = require("fs")
 
 const PORT = process.env.PORT || 3000;
 
@@ -18,12 +20,25 @@ app.get("/", (req, res) => {
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/notes.html"));
 })
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./public/index.html"));
-})
 
 //Api Routes
-app.post("/notes")
+app.get("/api/notes", (req, res) => {
+   
+    //read file and retunr notes object
+    fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
+        if (err) throw err;
+        console.log("this is data", JSON.parse(data))
+        return res.json(JSON.parse(data))
+    })
+    //this returns that json obj
+// console.log(db)
+//  res.json(db)
+})
+
+app.post("/api/notes", (req, res) => {
+    console.log(db)
+    res.json(db)
+})
 
 
 
@@ -31,3 +46,8 @@ app.post("/notes")
 app.listen(PORT, () => {
     console.log("Listening to http://localhost:" + PORT)
 })
+
+
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "./public/index.html"));
+// })

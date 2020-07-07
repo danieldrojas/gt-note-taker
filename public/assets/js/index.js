@@ -83,6 +83,7 @@ const handleNoteDelete = function (event) {
 const handleNoteView = function () {
   activeNote = $(this).data();
   renderActiveNote();
+  
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
