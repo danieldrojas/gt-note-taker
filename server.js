@@ -24,21 +24,53 @@ app.get("/notes", (req, res) => {
 //Api Routes
 app.get("/api/notes", (req, res) => {
    
-    //read file and retunr notes object
+    //read file and return notes object
     fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
         if (err) throw err;
-        console.log("this is data", JSON.parse(data))
+        // console.log("this is data", JSON.parse(data))
         return res.json(JSON.parse(data))
     })
-    //this returns that json obj
-// console.log(db)
-//  res.json(db)
+  
 })
 
+    // < !-- * POST`/api/notes` - Should receive a new note to save on the request body, add it to the`db.json` file, and then return the new note to the client. -- >
+
 app.post("/api/notes", (req, res) => {
-    console.log(db)
-    res.json(db)
-})
+  
+
+    fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
+        if (err) throw err;
+        const arrayOfNotes = JSON.parse(data);
+        console.log("this is my array",arrayOfNotes)
+        const newNote = req.body;
+        console.log("This is newNote", newNote);
+        arrayOfNotes.push(newNote)
+
+        const stringArray = JSON.stringify(arrayOfNotes)
+
+
+        
+
+        //Over weriteFile db first and then push new value
+        fs.writeFile(__dirname + "/db/db.json", stringArray, (err, data) => {
+            if (err) throw err;
+            console.log("this is my array after write",arrayOfNotes)
+
+           return res.json(arrayOfNotes);
+        })
+
+        
+
+
+        // console.log("this is arrayofnotes", arrayOfNotes)
+        // JSON.parse(arrayOfNotes);
+        // console.log(JSON.stringify(arrayOfNotes));
+
+        
+    });
+});
+    
+
 
 
 
