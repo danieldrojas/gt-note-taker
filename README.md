@@ -20,9 +20,9 @@ Note taker website application where you can save all your activities
 
 [Deployed website](https://gt-note-taker-express-server.herokuapp.com/)
 
-![Web App Upper ](./images/Background.png)
-![Web App Middle](./images/Optimization-Management.png)
-![Web App Lower ](./images/Media-Marketing.png)
+![Web main ](./public/assets/css/images/main.png)
+![Web save notes ](./public/assets/css/images/ima2.png)
+![Web delete notes](./public/assets/css/images/ima1.png)
 
 ## Credits
 
