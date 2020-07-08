@@ -37,21 +37,33 @@ app.get("/api/notes", (req, res) => {
 
 app.post("/api/notes", (req, res) => {
   
-
     fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
         if (err) throw err;
         const arrayOfNotes = JSON.parse(data);
+        
+
+
         console.log("this is my array",arrayOfNotes)
-        const newNote = req.body;
+        const newNote = req.body
         console.log("This is newNote", newNote);
         arrayOfNotes.push(newNote)
+
+        //Add id to each obj and assign them the value of index
+        for (let i = 0; i < arrayOfNotes.length; i++) {
+            arrayOfNotes[i].id = i;
+        }
+        console.log(arrayOfNotes);
+
+
+        
+    
 
         const stringArray = JSON.stringify(arrayOfNotes)
 
 
         
 
-        //Over weriteFile db first and then push new value
+        //Overwrite db file 
         fs.writeFile(__dirname + "/db/db.json", stringArray, (err, data) => {
             if (err) throw err;
             console.log("this is my array after write",arrayOfNotes)
@@ -62,17 +74,16 @@ app.post("/api/notes", (req, res) => {
         
 
 
-        // console.log("this is arrayofnotes", arrayOfNotes)
-        // JSON.parse(arrayOfNotes);
-        // console.log(JSON.stringify(arrayOfNotes));
-
         
     });
 });
     
 
 
+//  * DELETE`/api/notes/:id` - Should receive a query parameter containing the id of a note to delete.This means you'll need to find a way to give each note a unique `id` when it's saved.In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
 
+
+// app.delete("/api/notes/:id")
 
 
 app.listen(PORT, () => {
