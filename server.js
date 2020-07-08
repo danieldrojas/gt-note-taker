@@ -24,23 +24,66 @@ app.get("/notes", (req, res) => {
 //Api Routes
 app.get("/api/notes", (req, res) => {
    
-    //read file and retunr notes object
+    //read file and return notes object
     fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
         if (err) throw err;
-        console.log("this is data", JSON.parse(data))
+        // console.log("this is data", JSON.parse(data))
         return res.json(JSON.parse(data))
     })
-    //this returns that json obj
-// console.log(db)
-//  res.json(db)
+  
 })
+
+    // < !-- * POST`/api/notes` - Should receive a new note to save on the request body, add it to the`db.json` file, and then return the new note to the client. -- >
 
 app.post("/api/notes", (req, res) => {
-    console.log(db)
-    res.json(db)
-})
+  
+    fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
+        if (err) throw err;
+        const arrayOfNotes = JSON.parse(data);
+        
 
 
+        console.log("this is my array",arrayOfNotes)
+        const newNote = req.body
+        console.log("This is newNote", newNote);
+        arrayOfNotes.push(newNote)
+
+        //Add id to each obj and assign them the value of index
+        for (let i = 0; i < arrayOfNotes.length; i++) {
+            arrayOfNotes[i].id = i;
+        }
+        console.log(arrayOfNotes);
+
+
+        
+    
+
+        const stringArray = JSON.stringify(arrayOfNotes)
+
+
+        
+
+        //Overwrite db file 
+        fs.writeFile(__dirname + "/db/db.json", stringArray, (err, data) => {
+            if (err) throw err;
+            console.log("this is my array after write",arrayOfNotes)
+
+           return res.json(arrayOfNotes);
+        })
+
+        
+
+
+        
+    });
+});
+    
+
+
+//  * DELETE`/api/notes/:id` - Should receive a query parameter containing the id of a note to delete.This means you'll need to find a way to give each note a unique `id` when it's saved.In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
+
+
+// app.delete("/api/notes/:id")
 
 
 app.listen(PORT, () => {
